@@ -6,8 +6,11 @@ import validators
 def get_soup(link: str) -> BeautifulSoup | None:
     if not validators.url(link):
         return None
-    with requests.Session() as s:
-        res = s.get(link, timeout=10, verify=False)
+    try:
+        res = requests.get(link, timeout=10, verify=False)
+    except Exception as e:
+        print(e)
+        return None
     # print(res.content)
     soup = BeautifulSoup(res.content, "lxml")
     # print(soup)
